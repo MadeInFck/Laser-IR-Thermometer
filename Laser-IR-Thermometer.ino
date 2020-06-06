@@ -1,10 +1,8 @@
-//MN Maker
-//Laser Temp Gun
-//10.6.19
-
+#include <SPI.h>
 #include <Wire.h>
-#include <Adafruit_MLX90614.h>
+#include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <Adafruit_MLX90614.h>
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
@@ -20,8 +18,7 @@ Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
 void setup() {
   Serial.begin(115200);
-  Serial.println(" Test Adafruit MLX90614"); 
-  
+   
   pinMode(Laser_Pin,OUTPUT);
   pinMode(buttonPin, INPUT);
   
@@ -29,18 +26,23 @@ void setup() {
     Serial.println(F("SSD1306 allocation failed"));
     for(;;);
   }
-  
+  Serial.println(F(" OLED initialisé "));
 
   display.clearDisplay();
-  display.setRotation(2);
-  display.setTextSize(1);
+  display.setRotation(0);
   display.setTextColor(WHITE);
-  display.setCursor(0, 35);
-  display.println("Initialisation du capteur");
+  //display.invertDisplay(true);
+  display.setTextSize(1);
+  display.setCursor(15, 35);
+  display.print("Initialisation");
+  display.setCursor(35, 45);
+  display.print("du capteur");
+  
   display.display();
-  delay(250);
+  delay(1000);
   display.clearDisplay();
 
+  Serial.println(" Test Adafruit MLX90614"); 
   mlx.begin(); 
   
 }
@@ -60,11 +62,11 @@ void loop() {
     
     display.clearDisplay();
     display.setTextSize(2);  //Size 2 means each pixel is 12 width and 16 high
-    display.setCursor(25, 10);
+    display.setCursor(25, 20);
     display.print(mlx.readObjectTempC());
-    display.setCursor(95, 10);
-    display.print("°C");
-    display.setTextSize(2);
+    display.setCursor(50, 40);
+    display.print("\xA7");
+    display.print("C");
     display.display();
     
   } else {
@@ -73,15 +75,8 @@ void loop() {
   
     display.clearDisplay();
     display.setTextSize(2);  //Size 2 means each pixel is 12 width and 16 high
-    display.setCursor(35, 10);
-    display.print("-----");
-    display.setCursor(105, 10);
-    display.print("");
-    display.setTextSize(2);
-    display.setCursor(35, 36);
-    display.print("-----");
-    display.setCursor(105, 36);
-    display.print("");
+    display.setCursor(35, 20);
+    display.print("PRET !");
     display.display();
     
   }
